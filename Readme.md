@@ -10,12 +10,20 @@ Build Restful CRUD API for a simple Note-Taking application using Spring Boot, M
 
 3. Mysql - 5.x.x
 
+4. Swagger
+
+5. Scheduler
+
+6. Java Mailing
+
+7. VelocityEngine
+
 ## Steps to Setup
 
 **1. Clone the application**
 
 ```bash
-git clone https://github.com/callicoder/spring-boot-mysql-rest-api-tutorial.git
+git clone https://github.com/faizakram/spring-boot-mysql-rest-api-tutorial-master.git
 ```
 
 **2. Create Mysql database**
@@ -62,6 +70,3 @@ You can test them using postman or any other rest client.
 
 ## Learn more
 
-You can find the tutorial for this application on my blog -
-
-<https://www.callicoder.com/spring-boot-rest-api-tutorial-with-mysql-jpa-hibernate/>
