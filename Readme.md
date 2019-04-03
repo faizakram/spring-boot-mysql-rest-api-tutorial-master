@@ -49,6 +49,7 @@ Alternatively, you can run the app without packaging it using -
 ```bash
 mvn spring-boot:run
 ```
+#Swagger URL:- http://localhost:8080/swagger-ui.html#/
 
 The app will start running at <http://localhost:8080>.
 
