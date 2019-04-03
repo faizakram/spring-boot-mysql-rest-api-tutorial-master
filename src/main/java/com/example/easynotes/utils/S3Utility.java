@@ -107,7 +107,8 @@ public class S3Utility {
 	}
 
 	private void writeObjectsInDB(List<String> resources) {
-		Map<String, S3ObjectSummary> map = getAllObjects().getObjectSummaries().stream()
+		ObjectListing objectListing =getAllObjects();
+		Map<String, S3ObjectSummary> map = objectListing.getObjectSummaries().stream()
 				.collect(Collectors.toMap(S3ObjectSummary::getKey, s -> s));
 		resources.forEach(fileNmae -> {
 			S3ObjectSummary os = map.get(fileNmae);
