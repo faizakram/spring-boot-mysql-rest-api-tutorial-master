@@ -1,7 +1,10 @@
 package com.example.easynotes.utils;
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +44,7 @@ public class S3Utility {
 
 	@Autowired
 	private CopyObjectRepository copyObjectRepository;
+
 	/**
 	 * Get Basic AWS Credentials
 	 * 
@@ -103,15 +107,17 @@ public class S3Utility {
 	}
 
 	private void writeObjectsInDB(List<String> resources) {
-		for (S3ObjectSummary os : getAllObjects().getObjectSummaries()) {
-			if (resources.contains(os.getKey())) {
-				CopyObjects copyObjects = new CopyObjects();
-				copyObjects.setFileName(os.getKey());
-				copyObjects.setCreatedOn(DateUtil.getCurrentTimestampInUTC());
-				copyObjects.setFileSize(os.getSize());
-				copyObjectRepository.save(copyObjects);
-			}
-		}
+		Map<String, S3ObjectSummary> map = getAllObjects().getObjectSummaries().stream()
+				.collect(Collectors.toMap(S3ObjectSummary::getKey, s -> s));
+		resources.forEach(fileNmae -> {
+			S3ObjectSummary os = map.get(fileNmae);
+			System.out.println("added");
+			CopyObjects copyObjects = new CopyObjects();
+			copyObjects.setFileName(os.getKey());
+			copyObjects.setCreatedOn(new Date());
+			copyObjects.setFileSize(os.getSize());
+			copyObjectRepository.save(copyObjects);
+		});
 	}
 
 	private void deleteObjectsFromPublic(List<String> objects) {

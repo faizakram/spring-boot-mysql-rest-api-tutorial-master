@@ -12,7 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "copyObject")
+@Table(name = "copy_object")
 public class CopyObjects {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
