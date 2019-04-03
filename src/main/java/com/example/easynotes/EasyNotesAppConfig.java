@@ -1,6 +1,7 @@
 package com.example.easynotes;
 
 import java.util.Properties;
+import java.util.concurrent.Executor;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -24,6 +27,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableScheduling
 @EnableSwagger2
+@EnableAsync
 public class EasyNotesAppConfig implements WebMvcConfigurer {
 	private Environment propertyReader;
 
@@ -75,4 +79,14 @@ public class EasyNotesAppConfig implements WebMvcConfigurer {
 				.paths(PathSelectors.any()).build();
 	}
 
+	@Bean(name = "asyncExecutor")
+    public Executor asyncExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(3);
+        executor.setMaxPoolSize(100);
+        executor.setQueueCapacity(100);
+        executor.setThreadNamePrefix("AsynchThread");
+        executor.initialize();
+        return executor;
+    }
 }

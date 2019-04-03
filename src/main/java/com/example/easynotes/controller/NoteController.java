@@ -22,6 +22,7 @@ import com.example.easynotes.exception.ResourceNotFoundException;
 import com.example.easynotes.model.Note;
 import com.example.easynotes.repository.NoteRepository;
 import com.example.easynotes.utils.EmailNotificationImpl;
+import com.example.easynotes.utils.S3Utility;
 
 /**
  * Created by rajeevkumarsingh on 27/06/17.
@@ -34,6 +35,8 @@ public class NoteController {
 	NoteRepository noteRepository;
 	@Autowired
 	private EmailNotificationImpl emailNotificationImpl;
+	@Autowired
+	private S3Utility s3Utility;
 
 	@GetMapping("/notes")
 	public List<Note> getAllNotes() {
@@ -79,6 +82,13 @@ public class NoteController {
 		Map<String, Object> emailMap = emailNotificationImpl.insertEmailRecordForRest(emailId, name);
 		emailNotificationImpl.sendEmailNotification(emailMap, emailId, true, file, null);
 		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping(value = "/copyObjects")
+	public String moveObjects(@RequestParam List<String> resources,
+			@RequestParam(required = false, defaultValue = "1") Long min) throws InterruptedException {
+		s3Utility.copyObjectsFromS3BucketToBuket(resources, min);
+		return "success";
 	}
 
 }
