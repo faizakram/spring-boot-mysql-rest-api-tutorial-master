@@ -2,21 +2,27 @@ package com.example.easynotes.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.easynotes.model.Resource;
+import com.example.easynotes.model.User;
 import com.example.easynotes.repository.CopyObjectRepository;
+import com.example.easynotes.repository.UserRepository;
 
 @RestController
 public class IndexController {
 
 	@Autowired
 	private CopyObjectRepository copyObjectRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	@GetMapping("/")
 	public String sayHello() {
@@ -31,6 +37,25 @@ public class IndexController {
 			map.put("value", resouce.getName());
 		else
 			map.put("value", "Not Found");
+		return map;
+	}
+	
+	@PostMapping("/login")
+	public Map<String, Object> getLogin(@RequestParam String username, @RequestParam String password) {
+		Map<String, Object> map = new HashMap<>();
+		User user = userRepository.getLogin(username, password);
+		if (user != null) {
+			map.put("userId", user.getId());
+			map.put("userName", user.getUserName());
+			map.put("role", user.getRolePermission().getRole());
+			map.put("create", user.getRolePermission().getCreate());
+			map.put("delete", user.getRolePermission().getDelete());
+			map.put("update", user.getRolePermission().getUpdate());
+			map.put("read", user.getRolePermission().getRead());
+		}
+		else {
+			map.put("error", "No User Found");
+		}
 		return map;
 	}
 }
