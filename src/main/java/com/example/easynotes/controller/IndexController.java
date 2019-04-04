@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.easynotes.model.Resource;
-import com.example.easynotes.repository.ResourceRepository;
+import com.example.easynotes.repository.CopyObjectRepository;
 
 @RestController
 public class IndexController {
 
 	@Autowired
-	private ResourceRepository resourceRepository;
+	private CopyObjectRepository copyObjectRepository;
 
 	@GetMapping("/")
 	public String sayHello() {
@@ -24,11 +24,11 @@ public class IndexController {
 	}
 
 	@GetMapping("/getName/{id}")
-	public Map<String, Object> getNameById(@PathVariable Long id) {
+	public Map<String, Object> getNameById(@PathVariable String id) {
 		Map<String, Object> map = new HashMap<>();
-		Optional<Resource> resouce = resourceRepository.findById(id);
-		if (resouce.isPresent())
-			map.put("value", resouce.get().getName());
+		Resource resouce = copyObjectRepository.findBy(id);
+		if (resouce != null)
+			map.put("value", resouce.getName());
 		else
 			map.put("value", "Not Found");
 		return map;
