@@ -26,6 +26,13 @@ public class CopyObjects {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name ="modified_on")
     private Date modifiedOn;
+    
+    @Column(name ="valid_min")
+    private Long validMin;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name ="expiration_time")
+    private Date expirationTime;
 
 	/**
 	 * @return the id
@@ -95,6 +102,34 @@ public class CopyObjects {
 	 */
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
+	}
+
+	/**
+	 * @return the validMin
+	 */
+	public Long getValidMin() {
+		return validMin;
+	}
+
+	/**
+	 * @param validMin the validMin to set
+	 */
+	public void setValidMin(Long validMin) {
+		this.validMin = validMin;
+	}
+
+	/**
+	 * @return the expirationTime
+	 */
+	public Date getExpirationTime() {
+		return expirationTime;
+	}
+
+	/**
+	 * @param expirationTime the expirationTime to set
+	 */
+	public void setExpirationTime(Date expirationTime) {
+		this.expirationTime = expirationTime;
 	}
 
    

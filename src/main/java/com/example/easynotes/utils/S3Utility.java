@@ -1,6 +1,7 @@
 package com.example.easynotes.utils;
 
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -99,15 +100,15 @@ public class S3Utility {
 		return getAmazonS3().listObjects(privateBucketName);
 	}
 
-	private void copyObjectsFromPrivateToPublic(List<String> resources) {
-		writeObjectsInDB(resources);
+	private void copyObjectsFromPrivateToPublic(List<String> resources, Long min) {
+		writeObjectsInDB(resources, min);
 		resources
 				.forEach(fileName -> getAmazonS3().copyObject(privateBucketName, fileName, publicBucketName, fileName));
 
 	}
 
-	private void writeObjectsInDB(List<String> resources) {
-		ObjectListing objectListing =getAllObjects();
+	private void writeObjectsInDB(List<String> resources, Long min) {
+		ObjectListing objectListing = getAllObjects();
 		Map<String, S3ObjectSummary> map = objectListing.getObjectSummaries().stream()
 				.collect(Collectors.toMap(S3ObjectSummary::getKey, s -> s));
 		resources.forEach(fileNmae -> {
@@ -117,8 +118,20 @@ public class S3Utility {
 			copyObjects.setFileName(os.getKey());
 			copyObjects.setCreatedOn(new Date());
 			copyObjects.setFileSize(os.getSize());
+			copyObjects.setValidMin(min);
+			copyObjects.setExpirationTime(getExpireDateTime(min));
 			copyObjectRepository.save(copyObjects);
 		});
+	}
+	/**
+	 * getExpireDateTime
+	 * @param min 
+	 * @return
+	 */
+	private Date getExpireDateTime(Long min) {
+		Calendar now = Calendar.getInstance();
+	    now.add(Calendar.MINUTE, min.intValue());
+		return now.getTime();
 	}
 
 	private void deleteObjectsFromPublic(List<String> objects) {
@@ -138,7 +151,7 @@ public class S3Utility {
 	@Async("asyncExecutor")
 	public void copyObjectsFromS3BucketToBuket(List<String> resources, Long min) throws InterruptedException {
 		// Copy Object From Private Bucket From Public Bucket
-		copyObjectsFromPrivateToPublic(resources);
+		copyObjectsFromPrivateToPublic(resources, min);
 		Thread.sleep(min * 60000);
 		// Delete All Objects From Public
 		deleteObjectsFromPublic(resources);
