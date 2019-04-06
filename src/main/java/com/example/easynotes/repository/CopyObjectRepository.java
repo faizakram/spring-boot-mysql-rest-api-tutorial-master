@@ -1,5 +1,8 @@
 package com.example.easynotes.repository;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,5 +16,7 @@ public interface CopyObjectRepository extends JpaRepository<CopyObjects, Long> {
 
 	@Query("select r from Resource r where r.id=:id")
 	Resource findBy(@Param("id") String id);
+	@Query("select r from CopyObjects r where r.expirationTime <=:date")
+	List<CopyObjects> findByCurrentTime(@Param("date") Date date);
 
 }

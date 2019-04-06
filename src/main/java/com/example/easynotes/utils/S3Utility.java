@@ -116,29 +116,31 @@ public class S3Utility {
 			System.out.println("added");
 			CopyObjects copyObjects = new CopyObjects();
 			copyObjects.setFileName(os.getKey());
-			copyObjects.setCreatedOn(new Date());
 			copyObjects.setFileSize(os.getSize());
 			copyObjects.setValidMin(min);
 			copyObjects.setExpirationTime(getExpireDateTime(min));
 			copyObjectRepository.save(copyObjects);
 		});
 	}
+
 	/**
 	 * getExpireDateTime
-	 * @param min 
+	 * 
+	 * @param min
 	 * @return
 	 */
 	private Date getExpireDateTime(Long min) {
 		Calendar now = Calendar.getInstance();
-	    now.add(Calendar.MINUTE, min.intValue());
+		now.add(Calendar.MINUTE, min.intValue());
 		return now.getTime();
 	}
 
-	private void deleteObjectsFromPublic(List<String> objects) {
-		objects.forEach(fileName -> {
-			DeleteObjectsRequest delObjReq = new DeleteObjectsRequest(publicBucketName).withKeys(fileName);
-			getAmazonS3().deleteObjects(delObjReq);
-		});
+	@Async
+	public void deleteObjectsFromPublic(List<String> objects) {
+		String[] files = new String[objects.size()];
+		files = objects.toArray(files);
+		DeleteObjectsRequest delObjReq = new DeleteObjectsRequest(publicBucketName).withKeys(files);
+		getAmazonS3().deleteObjects(delObjReq);
 
 	}
 
@@ -147,13 +149,14 @@ public class S3Utility {
 	 * @param resources
 	 * @param min
 	 * @throws InterruptedException
-	 */
 	@Async("asyncExecutor")
-	public void copyObjectsFromS3BucketToBuket(List<String> resources, Long min) throws InterruptedException {
+	 */
+	public void copyObjectsFromS3BucketToBuket(List<String> resources, Long min) {
 		// Copy Object From Private Bucket From Public Bucket
 		copyObjectsFromPrivateToPublic(resources, min);
-		Thread.sleep(min * 60000);
-		// Delete All Objects From Public
-		deleteObjectsFromPublic(resources);
+		/*
+		 * Thread.sleep(min * 60000); // Delete All Objects From Public
+		 * deleteObjectsFromPublic(resources);
+		 */
 	}
 }

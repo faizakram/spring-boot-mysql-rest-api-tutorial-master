@@ -17,15 +17,10 @@ public class CopyObjects {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name ="file_name")
     private String fileName;
+    @Column(name ="file_size")
     private Long fileSize;
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name ="created_on")
-    private Date createdOn;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name ="modified_on")
-    private Date modifiedOn;
     
     @Column(name ="valid_min")
     private Long validMin;
@@ -77,32 +72,6 @@ public class CopyObjects {
 	}
 
 	/**
-	 * @return the createdOn
-	 */
-	public Date getCreatedOn() {
-		return createdOn;
-	}
-
-	/**
-	 * @param createdOn the createdOn to set
-	 */
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
-	}
-
-	/**
-	 * @return the modifiedOn
-	 */
-	public Date getModifiedOn() {
-		return modifiedOn;
-	}
-
-	/**
-	 * @param modifiedOn the modifiedOn to set
-	 */
-	public void setModifiedOn(Date modifiedOn) {
-		this.modifiedOn = modifiedOn;
-	}
 
 	/**
 	 * @return the validMin
@@ -131,6 +100,27 @@ public class CopyObjects {
 	public void setExpirationTime(Date expirationTime) {
 		this.expirationTime = expirationTime;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("CopyObjects [id=");
+		builder.append(id);
+		builder.append(", fileName=");
+		builder.append(fileName);
+		builder.append(", fileSize=");
+		builder.append(fileSize);
+		builder.append(", validMin=");
+		builder.append(validMin);
+		builder.append(", expirationTime=");
+		builder.append(expirationTime);
+		builder.append("]");
+		return builder.toString();
+	}
+
 
    
 
