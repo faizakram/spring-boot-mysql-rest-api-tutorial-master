@@ -149,14 +149,9 @@ public class S3Utility {
 	 * @param resources
 	 * @param min
 	 * @throws InterruptedException
-	@Async("asyncExecutor")
 	 */
+	@Async
 	public void copyObjectsFromS3BucketToBuket(List<String> resources, Long min) {
-		// Copy Object From Private Bucket From Public Bucket
 		copyObjectsFromPrivateToPublic(resources, min);
-		/*
-		 * Thread.sleep(min * 60000); // Delete All Objects From Public
-		 * deleteObjectsFromPublic(resources);
-		 */
 	}
 }
