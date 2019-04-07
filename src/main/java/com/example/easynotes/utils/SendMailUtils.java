@@ -38,7 +38,12 @@ public class SendMailUtils {
 		if (CollectionUtils.isNotEmpty(copyObjects)) {
 			s3Utility.deleteObjectsFromPublic(
 					copyObjects.stream().map(CopyObjects::getFileName).collect(Collectors.toList()));
-			copyObjectRepository.deleteAll(copyObjects);
+			//This Delete Data From Table
+			//copyObjectRepository.deleteAll(copyObjects);
+			
+			//This will Only Maintain the status
+			copyObjects.forEach(file->file.setIsDeleted(true));
+			copyObjectRepository.saveAll(copyObjects);
 		}
 	}
 }

@@ -118,6 +118,7 @@ public class S3Utility {
 			copyObjects.setFileName(os.getKey());
 			copyObjects.setFileSize(os.getSize());
 			copyObjects.setValidMin(min);
+			copyObjects.setIsDeleted(false);
 			copyObjects.setExpirationTime(getExpireDateTime(min));
 			copyObjectRepository.save(copyObjects);
 		});

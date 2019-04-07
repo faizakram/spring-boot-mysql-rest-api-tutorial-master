@@ -28,6 +28,22 @@ public class CopyObjects {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name ="expiration_time")
     private Date expirationTime;
+    @Column(name ="is_deleted")
+    private Boolean isDeleted;
+
+	/**
+	 * @return the isDeleted
+	 */
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	/**
+	 * @param isDeleted the isDeleted to set
+	 */
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 
 	/**
 	 * @return the id
