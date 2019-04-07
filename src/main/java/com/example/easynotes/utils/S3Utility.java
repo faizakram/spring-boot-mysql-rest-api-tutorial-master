@@ -129,7 +129,7 @@ public class S3Utility {
 	 * @param min
 	 * @return
 	 */
-	private Date getExpireDateTime(Long min) {
+	public static Date getExpireDateTime(Long min) {
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.MINUTE, min.intValue());
 		return now.getTime();

@@ -1,6 +1,7 @@
 package com.example.easynotes.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.easynotes.model.CopyObjects;
 import com.example.easynotes.model.Resource;
 import com.example.easynotes.model.User;
 import com.example.easynotes.repository.CopyObjectRepository;
 import com.example.easynotes.repository.UserRepository;
+import com.example.easynotes.utils.S3Utility;
 
 @RestController
 public class IndexController {
@@ -23,6 +26,7 @@ public class IndexController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
 
 	@GetMapping("/")
 	public String sayHello() {
@@ -57,5 +61,17 @@ public class IndexController {
 			map.put("error", "No User Found");
 		}
 		return map;
+	}
+	
+	@GetMapping(value = "/increaseTime")
+	public String moveObjects(@RequestParam List<String> resources,
+			@RequestParam(required = false, defaultValue = "1") Long min) throws InterruptedException {
+		List<CopyObjects> fileList = copyObjectRepository.findAll(resources);
+		fileList.forEach(copyObject->{
+			copyObject.setValidMin(min);
+			copyObject.setExpirationTime(S3Utility.getExpireDateTime(min));
+		});
+		copyObjectRepository.saveAll(fileList);
+		return "success";
 	}
 }

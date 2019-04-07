@@ -18,5 +18,7 @@ public interface CopyObjectRepository extends JpaRepository<CopyObjects, Long> {
 	Resource findBy(@Param("id") String id);
 	@Query("select r from CopyObjects r where r.expirationTime <=:date")
 	List<CopyObjects> findByCurrentTime(@Param("date") Date date);
+	@Query("select r from CopyObjects r where r.fileName in (:fileName)")
+	List<CopyObjects> findAll(@Param("fileName") List<String> resources);
 
 }
