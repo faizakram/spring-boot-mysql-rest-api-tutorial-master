@@ -135,12 +135,9 @@ public class S3Utility {
 		return now.getTime();
 	}
 
-	@Async
+
 	public void deleteObjectsFromPublic(List<String> objects) {
-		String[] files = new String[objects.size()];
-		files = objects.toArray(files);
-		DeleteObjectsRequest delObjReq = new DeleteObjectsRequest(publicBucketName).withKeys(files);
-		getAmazonS3().deleteObjects(delObjReq);
+		objects.forEach(fileName -> getAmazonS3().deleteObject(publicBucketName, fileName));
 
 	}
 
