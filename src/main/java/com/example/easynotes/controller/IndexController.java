@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,8 @@ public class IndexController {
 	@Autowired
 	private UserRepository userRepository;
 	
+	
+	private static final Logger logger = LogManager.getLogger("app");
 
 	@GetMapping("/")
 	public String sayHello() {
@@ -59,6 +63,8 @@ public class IndexController {
 		}
 		else {
 			map.put("error", "No User Found");
+			logger.info("Hello");
+			logger.warn("Warning");
 		}
 		return map;
 	}
