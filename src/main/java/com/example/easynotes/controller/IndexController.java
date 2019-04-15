@@ -7,11 +7,13 @@ import java.util.Map;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.easynotes.model.CopyObjects;
 import com.example.easynotes.model.Resource;
@@ -28,7 +30,8 @@ public class IndexController {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
+	@Autowired
+	private S3Utility s3Utility;
 	
 	private static final Logger logger = LogManager.getLogger("app");
 
@@ -78,6 +81,13 @@ public class IndexController {
 			copyObject.setExpirationTime(S3Utility.getExpireDateTime(min));
 		});
 		copyObjectRepository.saveAll(fileList);
+		return "success";
+	}
+	
+	
+	@PostMapping("uploadall")
+	public String sendMail(@RequestParam List<MultipartFile> file) {
+		s3Utility.uploadOnS3All(file);
 		return "success";
 	}
 }

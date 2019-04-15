@@ -5,19 +5,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.DeleteObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
@@ -80,6 +81,18 @@ public class S3Utility {
 		return getAmazonS3().putObject(privateBucketName, fileName, file, null);
 	}
 
+	@Async
+	public void uploadOnS3All(List<MultipartFile> files) {
+		files.forEach(file -> {
+			String fileName = UUID.randomUUID() + file.getOriginalFilename();
+			try {
+				getAmazonS3().putObject(privateBucketName, fileName, file.getInputStream(), null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+	}
+
 	/**
 	 * Download Object
 	 * 
@@ -135,7 +148,6 @@ public class S3Utility {
 		now.add(Calendar.MINUTE, min.intValue());
 		return now.getTime();
 	}
-
 
 	public void deleteObjectsFromPublic(List<String> objects) {
 		objects.forEach(fileName -> getAmazonS3().deleteObject(publicBucketName, fileName));
