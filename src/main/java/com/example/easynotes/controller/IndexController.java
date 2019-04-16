@@ -4,10 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,8 +85,11 @@ public class IndexController {
 	
 	
 	@PostMapping("uploadall")
-	public String sendMail(@RequestParam List<MultipartFile> file) {
-		s3Utility.uploadOnS3All(file);
-		return "success";
+	public Map<String, Object> sendMail(@RequestParam List<MultipartFile> file) {
+		List<String> files= s3Utility.uploadOnS3All(file);
+		Map<String, Object> map = new HashMap<>();
+		map.put("fileNames", files);
+		map.put("size", files.size());
+		return map;
 	}
 }
