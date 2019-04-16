@@ -26,7 +26,9 @@ import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.example.easynotes.model.CopyObjects;
+import com.example.easynotes.model.Resource;
 import com.example.easynotes.repository.CopyObjectRepository;
+import com.example.easynotes.repository.ResourceRepository;
 
 @Component
 public class S3Utility {
@@ -48,6 +50,8 @@ public class S3Utility {
 
 	@Autowired
 	private CopyObjectRepository copyObjectRepository;
+	@Autowired
+	private ResourceRepository resourceRepository;
 
 	/**
 	 * Get Basic AWS Credentials
@@ -88,6 +92,11 @@ public class S3Utility {
 		List<String> names = new ArrayList<>();
 		files.forEach(e -> {
 			String fileName = UUID.randomUUID() + e.getOriginalFilename();
+			Resource resource = new Resource();
+			resource.setName(e.getOriginalFilename());
+			resource.setObjectName(fileName);
+			resource.setType(e.getContentType());
+			resourceRepository.save(resource);
 			map.put(fileName, e);
 			names.add(fileName);
 		});
