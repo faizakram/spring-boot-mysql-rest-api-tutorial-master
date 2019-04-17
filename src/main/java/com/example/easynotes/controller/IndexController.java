@@ -20,6 +20,7 @@ import com.example.easynotes.model.CopyObjects;
 import com.example.easynotes.model.Resource;
 import com.example.easynotes.model.User;
 import com.example.easynotes.repository.CopyObjectRepository;
+import com.example.easynotes.repository.ResourceRepository;
 import com.example.easynotes.repository.UserRepository;
 import com.example.easynotes.utils.S3Utility;
 
@@ -33,6 +34,9 @@ public class IndexController {
 	private UserRepository userRepository;
 	@Autowired
 	private S3Utility s3Utility;
+	
+	@Autowired
+	private ResourceRepository resourceRepository;
 	
 	private static final Logger logger = LogManager.getLogger("app");
 
@@ -88,10 +92,22 @@ public class IndexController {
 	
 	@PostMapping("uploadall")
 	public Map<String, Object> sendMail(@RequestParam List<MultipartFile> file) {
-		List<String> files= s3Utility.uploadOnS3All(file);
+		Map<String, MultipartFile> maps = new HashMap<>();
+		List<String> names = new ArrayList<>();
+		file.forEach(e -> {
+			String fileName = UUID.randomUUID() + e.getOriginalFilename();
+			Resource resource = new Resource();
+			resource.setName(e.getOriginalFilename());
+			resource.setObjectName(fileName);
+			resource.setType(e.getContentType());
+			resourceRepository.save(resource);
+			maps.put(fileName, e);
+			names.add(fileName);
+		});
+		s3Utility.uploadOnS3All(maps);
 		Map<String, Object> map = new HashMap<>();
-		map.put("fileNames", files);
-		map.put("size", files.size());
+		map.put("fileNames", names);
+		map.put("size", file.size());
 		return map;
 	}
 	/**

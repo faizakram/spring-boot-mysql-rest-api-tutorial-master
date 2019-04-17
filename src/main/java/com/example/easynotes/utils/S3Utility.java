@@ -1,13 +1,10 @@
 package com.example.easynotes.utils;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +23,7 @@ import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.example.easynotes.model.CopyObjects;
-import com.example.easynotes.model.Resource;
 import com.example.easynotes.repository.CopyObjectRepository;
-import com.example.easynotes.repository.ResourceRepository;
 
 @Component
 public class S3Utility {
@@ -50,8 +45,7 @@ public class S3Utility {
 
 	@Autowired
 	private CopyObjectRepository copyObjectRepository;
-	@Autowired
-	private ResourceRepository resourceRepository;
+
 
 	/**
 	 * Get Basic AWS Credentials
@@ -87,22 +81,6 @@ public class S3Utility {
 		return getAmazonS3().putObject(privateBucketName, fileName, file, null);
 	}
 
-	public List<String> uploadOnS3All(List<MultipartFile> files) {
-		Map<String, MultipartFile> map = new HashMap<>();
-		List<String> names = new ArrayList<>();
-		files.forEach(e -> {
-			String fileName = UUID.randomUUID() + e.getOriginalFilename();
-			Resource resource = new Resource();
-			resource.setName(e.getOriginalFilename());
-			resource.setObjectName(fileName);
-			resource.setType(e.getContentType());
-			resourceRepository.save(resource);
-			map.put(fileName, e);
-			names.add(fileName);
-		});
-		uploadOnS3All(map);
-		return names;
-	}
 
 	@Async
 	public void uploadOnS3All(Map<String, MultipartFile> map) {
