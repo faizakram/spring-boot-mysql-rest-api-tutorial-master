@@ -1,8 +1,10 @@
 package com.example.easynotes.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -89,6 +91,26 @@ public class IndexController {
 		List<String> files= s3Utility.uploadOnS3All(file);
 		Map<String, Object> map = new HashMap<>();
 		map.put("fileNames", files);
+		map.put("size", files.size());
+		return map;
+	}
+	/**
+	 * withOutDB
+	 * @param files
+	 * @return
+	 */
+	@PostMapping("uploadwithoutdb")
+	public Map<String, Object> withOutDB(@RequestParam List<MultipartFile> files) {
+		Map<String, MultipartFile> mapobj = new HashMap<>();
+		List<String> names = new ArrayList<>();
+		files.forEach(e -> {
+			String fileName = UUID.randomUUID() + e.getOriginalFilename();
+			mapobj.put(fileName, e);
+			names.add(fileName);
+		});
+		s3Utility.uploadOnS3All(mapobj);
+		Map<String, Object> map = new HashMap<>();
+		map.put("fileNames", names);
 		map.put("size", files.size());
 		return map;
 	}
