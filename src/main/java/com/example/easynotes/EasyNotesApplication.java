@@ -1,7 +1,5 @@
 package com.example.easynotes;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -12,7 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 public class EasyNotesApplication extends SpringBootServletInitializer{
 
-	private Logger logger = LoggerFactory.getLogger(EasyNotesApplication.class);
 	@Override
 	 protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 	  return application.sources(EasyNotesApplication.class);

@@ -104,7 +104,7 @@ public class IndexController {
 			maps.put(fileName, e);
 			names.add(fileName);
 		});
-		s3Utility.uploadOnS3All(maps);
+		//s3Utility.uploadOnS3All(maps);
 		Map<String, Object> map = new HashMap<>();
 		map.put("fileNames", names);
 		map.put("size", file.size());
@@ -130,4 +130,7 @@ public class IndexController {
 		map.put("size", files.size());
 		return map;
 	}
+	
+	
+	
 }

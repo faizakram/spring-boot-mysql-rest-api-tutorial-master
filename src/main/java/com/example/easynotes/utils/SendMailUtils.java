@@ -32,7 +32,7 @@ public class SendMailUtils {
 		System.out.println("Working");
 	}*/
 
-	@Scheduled(cron = "0 * * ? * *")
+	/*@Scheduled(cron = "0 * * ? * *")
 	public void removeFileOnS3() {
 		List<CopyObjects> copyObjects = copyObjectRepository.findByCurrentTime(new Date());
 		if (CollectionUtils.isNotEmpty(copyObjects)) {
@@ -45,5 +45,5 @@ public class SendMailUtils {
 			copyObjects.forEach(file->file.setIsDeleted(true));
 			copyObjectRepository.saveAll(copyObjects);
 		}
-	}
+	}*/
 }
