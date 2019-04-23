@@ -3,6 +3,8 @@ package com.example.easynotes.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 /**
  * The persistent class for the hierarchal_user database table.
@@ -22,6 +24,7 @@ public class HierarchalUser implements Serializable {
 	private String userName;
 
 	//bi-directional many-to-one association to Hierarchical
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name="hierarchy_id")
 	private Hierarchical hierarchical;

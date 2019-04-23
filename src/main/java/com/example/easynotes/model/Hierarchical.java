@@ -34,7 +34,7 @@ public class Hierarchical implements Serializable {
 	private String name;
 
 	// bi-directional many-to-one association to HierarchalUser
-	
+	@JsonBackReference
 	@OneToMany(mappedBy = "hierarchical")
 	private List<HierarchalUser> hierarchalUsers;
 
