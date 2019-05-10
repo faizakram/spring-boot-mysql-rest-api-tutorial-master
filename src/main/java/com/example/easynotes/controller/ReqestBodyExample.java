@@ -1,6 +1,5 @@
 package com.example.easynotes.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ public class ReqestBodyExample {
 	
 
 	@PostMapping("uploads")
-	public Map<String, Object> requestBody(@RequestParam ContactInfo contactInfo) throws IOException {
+	public Map<String, Object> requestBody(@RequestParam ContactInfo contactInfo){
 		Map<String, Object> maps = new HashMap<>();
 		maps.put("contactInfo", contactInfo);
 		return maps;

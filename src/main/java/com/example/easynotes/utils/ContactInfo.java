@@ -1,10 +1,15 @@
 package com.example.easynotes.utils;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 public class ContactInfo {
 
 	private Integer id;
 	private String name;
 	private Integer age;
+	private List<MultipartFile> file;
 	/**
 	 * @return the id
 	 */
@@ -40,6 +45,18 @@ public class ContactInfo {
 	 */
 	public void setAge(Integer age) {
 		this.age = age;
+	}
+	/**
+	 * @return the file
+	 */
+	public List<MultipartFile> getFile() {
+		return file;
+	}
+	/**
+	 * @param file the file to set
+	 */
+	public void setFile(List<MultipartFile> file) {
+		this.file = file;
 	}
 	
 }
