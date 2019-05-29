@@ -14,7 +14,7 @@ public class ReqestBodyExample {
 
 	
 
-	@PostMapping("uploads")
+	@PostMapping("requestBodytest")
 	public Map<String, Object> requestBody(@RequestParam ContactInfo contactInfo){
 		Map<String, Object> maps = new HashMap<>();
 		maps.put("contactInfo", contactInfo);

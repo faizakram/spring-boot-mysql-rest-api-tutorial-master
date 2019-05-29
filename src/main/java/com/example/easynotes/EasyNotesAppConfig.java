@@ -41,7 +41,8 @@ public class EasyNotesAppConfig implements WebMvcConfigurer {
 		Properties props = new Properties();
 		props.put(ConfigurationConstant.RESOURCE_LOADER, ConfigurationConstant.RESOURCE_LOADER_VALUE);
 		props.put(ConfigurationConstant.RESOURCE_LOADER_CLASS, ConfigurationConstant.RESOURCE_LOADER_CLASS_VALUE);
-		props.put(ConfigurationConstant.RESOURCE_LOADER_FILE_PATH, propertyReader.getProperty(ConfigurationConstant.RESOURCE_LOADER_FILE_PATH_VALUE));
+		props.put(ConfigurationConstant.RESOURCE_LOADER_FILE_PATH,
+				propertyReader.getProperty(ConfigurationConstant.RESOURCE_LOADER_FILE_PATH_VALUE));
 		return new VelocityEngine(props);
 	}
 
@@ -80,13 +81,29 @@ public class EasyNotesAppConfig implements WebMvcConfigurer {
 	}
 
 	@Bean(name = "asyncExecutor")
-    public Executor asyncExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(3);
-        executor.setMaxPoolSize(100);
-        executor.setQueueCapacity(100);
-        executor.setThreadNamePrefix("AsynchThread");
-        executor.initialize();
-        return executor;
-    }
+	public Executor asyncExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(3);
+		executor.setMaxPoolSize(100);
+		executor.setQueueCapacity(100);
+		executor.setThreadNamePrefix("AsynchThread");
+		executor.initialize();
+		return executor;
+	}
+
+	/*@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(getJsonConverter());
+		converters.add(getImageConverter());
+	}
+
+	@Bean
+	 GsonHttpMessageConverter getJsonConverter() {
+		return new GsonHttpMessageConverter();
+	}
+
+	@Bean
+	 Base64EncodedImageHttpMessageConverter getImageConverter() {
+		return new Base64EncodedImageHttpMessageConverter();
+	}*/
 }

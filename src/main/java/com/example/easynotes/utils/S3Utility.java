@@ -47,6 +47,21 @@ public class S3Utility {
 	private CopyObjectRepository copyObjectRepository;
 
 
+	
+	/**
+	 * @return the privateBucketName
+	 */
+	public String getPrivateBucketName() {
+		return privateBucketName;
+	}
+
+	/**
+	 * @return the publicBucketName
+	 */
+	public String getPublicBucketName() {
+		return publicBucketName;
+	}
+
 	/**
 	 * Get Basic AWS Credentials
 	 * 
@@ -104,6 +119,12 @@ public class S3Utility {
 	public S3Object downloadObject(String fileName) {
 		return getAmazonS3().getObject(privateBucketName, fileName);
 	}
+	
+	public String getUrlPath(String fileName) {
+		return getAmazonS3().getObject(publicBucketName, fileName).getObjectContent().getHttpRequest().getURI().toString();
+	}
+	
+	
 
 	/**
 	 * Get All Objects

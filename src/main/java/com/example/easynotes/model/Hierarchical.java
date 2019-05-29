@@ -1,6 +1,8 @@
 package com.example.easynotes.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,8 +37,8 @@ public class Hierarchical implements Serializable {
 
 	// bi-directional many-to-one association to HierarchalUser
 	@JsonBackReference
-	@OneToMany(mappedBy = "hierarchical")
-	private List<HierarchalUser> hierarchalUsers;
+	@OneToMany(mappedBy = "hierarchical" ,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<HierarchalUser> hierarchalUsers = new ArrayList<>();
 
 	// bi-directional many-to-one association to Hierarchical
 	@JsonManagedReference
@@ -47,7 +49,7 @@ public class Hierarchical implements Serializable {
 	// bi-directional many-to-one association to Hierarchical
 	@JsonBackReference
 	@OneToMany(mappedBy = "hierarchical", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<Hierarchical> hierarchicals;
+	private Set<Hierarchical> hierarchicals = new HashSet<>();
 
 	public Hierarchical() {
 	}

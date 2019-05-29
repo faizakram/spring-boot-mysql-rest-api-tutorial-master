@@ -4,6 +4,16 @@ public class DownloadFile {
 	
 	private String fileName;
 	private byte[] file;
+	
+	public DownloadFile() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public DownloadFile(String fileName, byte[] file) {
+		super();
+		this.fileName = fileName;
+		this.file = file;
+	}
 	/**
 	 * @return the fileName
 	 */
